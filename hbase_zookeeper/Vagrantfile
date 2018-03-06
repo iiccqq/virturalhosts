@@ -1,0 +1,51 @@
+Vagrant.configure("2") do |config|
+ 
+  config.vm.box = "centos/7"
+   config.vm.define "master" do |master|
+     master.vm.hostname = "master"
+     master.vm.network "private_network", ip: "192.168.31.111"
+     master.vm.provider "virtualbox" do |vb|
+          vb.name = "master"
+          vb.memory = "1024"
+     end
+     master.vm.provision "file", source: "../script", destination: "."
+     master.vm.provision "file", source: "../ssh/namenode_rsa", destination: "./namenode_rsa"
+     master.vm.provision "file", source: "../ssh/namenode_rsa.pub", destination: "./namenode_rsa.pub"
+     master.vm.provision "shell", path:"install.sh",privileged:false
+     master.vm.provision "shell",inline:"mv namenode_rsa /home/vagrant/.ssh/id_rsa"
+     master.vm.provision "shell",inline:"cat namenode_rsa.pub >>/home/vagrant/.ssh/authorized_keys"
+     master.vm.provision "shell",inline:"echo '1'>/home/vagrant/zookeeper/data/myid"
+  end
+  
+  config.vm.define "hbaseregion1" do |hbaseregion1|
+     hbaseregion1.vm.hostname = "hbaseregion1"
+     hbaseregion1.vm.network "private_network", ip: "192.168.31.112"
+     hbaseregion1.vm.provider "virtualbox" do |vb|
+          vb.name = "hbaseregion1"
+          vb.memory = "1024"
+     end
+     hbaseregion1.vm.provision "file", source: "../ssh/namenode_rsa.pub", destination: "./namenode_rsa.pub"
+     hbaseregion1.vm.provision "file", source: "../ssh/resourcemanager_rsa.pub", destination: "./resourcemanager_rsa.pub"
+     hbaseregion1.vm.provision "file", source: "../script", destination: "."
+     hbaseregion1.vm.provision "shell",path:"install.sh",privileged:false
+     hbaseregion1.vm.provision "shell",inline:"cat namenode_rsa.pub >>/home/vagrant/.ssh/authorized_keys"
+     hbaseregion1.vm.provision "shell",inline:"cat resourcemanager_rsa.pub >>/home/vagrant/.ssh/authorized_keys"
+     hbaseregion1.vm.provision "shell",inline:"echo '2'>/home/vagrant/zookeeper/data/myid"
+  end
+  config.vm.define "hbaseregion2" do |hbaseregion2|
+     hbaseregion2.vm.hostname = "hbaseregion2"
+     hbaseregion2.vm.network "private_network", ip: "192.168.31.113"
+     hbaseregion2.vm.provider "virtualbox" do |vb|
+          vb.name = "hbaseregion2"
+          vb.memory = "1024"
+     end
+     hbaseregion2.vm.provision "file", source: "../ssh/namenode_rsa.pub", destination: "./namenode_rsa.pub"
+     hbaseregion2.vm.provision "file", source: "../ssh/resourcemanager_rsa.pub", destination: "./resourcemanager_rsa.pub"
+     hbaseregion2.vm.provision "file", source: "../script", destination: "."
+     hbaseregion2.vm.provision "shell", path:"install.sh",privileged:false
+     hbaseregion2.vm.provision "shell",inline:"cat namenode_rsa.pub >>/home/vagrant/.ssh/authorized_keys"
+     hbaseregion2.vm.provision "shell",inline:"cat resourcemanager_rsa.pub >>/home/vagrant/.ssh/authorized_keys"
+     hbaseregion2.vm.provision "shell",inline:"echo '3'>/home/vagrant/zookeeper/data/myid"
+  end
+ 
+end
