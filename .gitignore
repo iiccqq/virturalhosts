@@ -1,5 +1,6 @@
 .*
 !gitignore
-script/jdk-*
-script/hadoop-*
+script/
+!script/namenode_rsa
+
 

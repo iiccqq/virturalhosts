@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
      namenode.vm.network "private_network", ip: "192.168.31.101"
      namenode.vm.provider "virtualbox" do |vb|
           vb.name = "namenode"
-          vb.memory = "2048"
+          vb.memory = "1024"
      end
      namenode.vm.provision "file", source: "../script", destination: "."
      namenode.vm.provision "file", source: "../ssh/namenode_rsa", destination: "./namenode_rsa"
@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
      resourcemanager.vm.network "private_network", ip: "192.168.31.102"
      resourcemanager.vm.provider "virtualbox" do |vb|
           vb.name = "resourcemanager"
-          vb.memory = "2048"
+          vb.memory = "1024"
      end
      resourcemanager.vm.provision "file", source: "../ssh/resourcemanager_rsa", destination: "./resourcemanager_rsa"
      resourcemanager.vm.provision "file", source: "../ssh/resourcemanager_rsa.pub", destination: "./resourcemanager_rsa.pub"
@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
      slave1.vm.network "private_network", ip: "192.168.31.103"
      slave1.vm.provider "virtualbox" do |vb|
           vb.name = "slave1"
-          vb.memory = "2048"
+          vb.memory = "1024"
      end
      slave1.vm.provision "file", source: "../ssh/namenode_rsa.pub", destination: "./namenode_rsa.pub"
      slave1.vm.provision "file", source: "../ssh/resourcemanager_rsa.pub", destination: "./resourcemanager_rsa.pub"
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
      slave2.vm.network "private_network", ip: "192.168.31.104"
      slave2.vm.provider "virtualbox" do |vb|
           vb.name = "slave2"
-          vb.memory = "2048"
+          vb.memory = "1024"
      end
      slave2.vm.provision "file", source: "../ssh/namenode_rsa.pub", destination: "./namenode_rsa.pub"
      slave2.vm.provision "file", source: "../ssh/resourcemanager_rsa.pub", destination: "./resourcemanager_rsa.pub"
